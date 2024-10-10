@@ -1,14 +1,39 @@
-const SleepPage = () => {
+import { addSleep, getSleeps } from "../actions/sleep.actions";
+import { format } from "date-fns";
+
+const SleepPage = async () => {
+   const sleepsData = await getSleepData();
+
    return (
       <div className="flex flex-col items-center justify-items-center min-h-screen p-8  gap-16 sm:p-20">
          <section>
-            <div className="text-center space-y-2">
-               <h1>Sleep</h1>
-               <div className="grid grid-cols-2 gap-5">
-                  <button className="btn btn-lg">Start</button>
-                  <button className="btn btn-lg">End</button>
+            <form action={addSleep}>
+               <div className="text-center space-y-2">
+                  <h1>Sleep</h1>
+                  <div className="grid grid-cols-2 gap-5">
+                     <label className="btn btn-lg has-[:checked]:btn-primary">
+                        Start
+                        <input
+                           defaultChecked
+                           type="submit"
+                           name="sleep-status"
+                           value="start"
+                           className="hidden"
+                        />
+                     </label>
+
+                     <label className="btn btn-lg has-[:checked]:btn-primary">
+                        End
+                        <input
+                           type="submit"
+                           name="sleep-status"
+                           value="end"
+                           className="hidden"
+                        />
+                     </label>
+                  </div>
                </div>
-            </div>
+            </form>
          </section>
 
          <section>
@@ -24,14 +49,19 @@ const SleepPage = () => {
                      </tr>
                   </thead>
                   <tbody>
-                     {/* row 1 */}
-                     <tr>
-                        <td>29/09</td>
-                        <td>15:05</td>
-                        <td>Start</td>
-                        <td>X</td>
-                     </tr>
-                     {/* row 2 */}
+                     {sleepsData
+                        .sort((a, b) => b.createdAt - a.createdAt)
+                        .map(({ status, createdAt }) => {
+                           const date = format(createdAt, "dd/MM");
+                           const time = format(createdAt, "HH:mm");
+                           return (
+                              <tr>
+                                 <td>{date}</td>
+                                 <td>{time}</td>
+                                 <td>{status}</td>
+                              </tr>
+                           );
+                        })}
                   </tbody>
                </table>
             </div>
@@ -41,3 +71,12 @@ const SleepPage = () => {
 };
 
 export default SleepPage;
+
+async function getSleepData() {
+   try {
+      const { data, error } = await getSleeps();
+      return data;
+   } catch (error) {
+      return "Error while fetching sleep data" + error;
+   }
+}

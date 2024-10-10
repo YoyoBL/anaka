@@ -33,13 +33,13 @@ model Diaper {
 
 model Sleep {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
- status Status @default(START)
+ status Status @default(start)
   createdAt DateTime @default(now())
 }
 
 enum Status {
-  START
-  END
+  start
+  end
 }
 
 
