@@ -24,10 +24,10 @@ enum BrestSide {
   left
 }
 
-model Diapers {
+model Diaper {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  pee Boolean @default(true)
-  poop Boolean @default(false)
+  pee Boolean 
+  poop Boolean 
   createdAt DateTime @default(now())
 }
 

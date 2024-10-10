@@ -1,15 +1,35 @@
-const DiapersPage = () => {
+import { format } from "date-fns";
+import { addDiaper, getDiapers } from "../actions/diapers.actions";
+
+const DiapersPage = async () => {
+   const diapersData = await getDiapersData();
+
    return (
       <div className="flex flex-col items-center justify-items-center min-h-screen p-8  gap-16 sm:p-20">
          <section>
-            <div className="text-center space-y-2">
-               <h1>Diaper Change</h1>
-               <div className="grid grid-cols-3 gap-5">
-                  <button className="btn btn-lg btn-primary ">Pee</button>
-                  <button className="btn btn-lg">Poop</button>
-                  <button className="btn btn-lg">Save</button>
+            <form action={addDiaper}>
+               <div className="text-center space-y-2">
+                  <h1>Diaper Change</h1>
+                  <div className="grid grid-cols-3 gap-5">
+                     <label className="btn btn-lg has-[:checked]:btn-primary">
+                        Pee
+                        <input
+                           defaultChecked
+                           type="checkbox"
+                           name="pee"
+                           className="hidden"
+                        />
+                     </label>
+                     <label className="btn btn-lg has-[:checked]:btn-primary">
+                        Poop
+                        <input type="checkbox" name="poop" className="hidden" />
+                     </label>
+                     <button type="submit" className="btn btn-neutral btn-lg">
+                        Save
+                     </button>
+                  </div>
                </div>
-            </div>
+            </form>
          </section>
 
          <section>
@@ -27,13 +47,20 @@ const DiapersPage = () => {
                   </thead>
                   <tbody>
                      {/* row 1 */}
-                     <tr>
-                        <td>29/09</td>
-                        <td>15:05</td>
-                        <td>V</td>
-                        <td>-</td>
-                     </tr>
-                     {/* row 2 */}
+                     {diapersData
+                        .sort((a, b) => b.createdAt - a.createdAt)
+                        .map(({ pee, poop, createdAt }) => {
+                           const date = format(createdAt, "dd/MM");
+                           const time = format(createdAt, "HH:mm");
+                           return (
+                              <tr>
+                                 <td>{date}</td>
+                                 <td>{time}</td>
+                                 <td>{pee ? "V" : "X"}</td>
+                                 <td>{poop ? "V" : "X"}</td>
+                              </tr>
+                           );
+                        })}
                   </tbody>
                </table>
             </div>
@@ -43,3 +70,12 @@ const DiapersPage = () => {
 };
 
 export default DiapersPage;
+
+async function getDiapersData() {
+   try {
+      const { data, error } = await getDiapers();
+      return data;
+   } catch (error) {
+      return "Error while fetching diapers data" + error;
+   }
+}
