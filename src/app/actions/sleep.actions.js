@@ -1,6 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import prisma from "../lib/db";
+import { getIsraelCurrentTime } from "../lib/getIsraelCurrentTime";
 
 export async function getSleeps() {
    try {
@@ -13,10 +14,14 @@ export async function getSleeps() {
 }
 
 export async function addSleep(formData) {
-   const data = formData.get("sleep-status");
+   getIsraelCurrentTime();
+   const data = {
+      status: formData.get("sleep-status"),
+      createdAt: getIsraelCurrentTime(),
+   };
 
    try {
-      const newSleep = await prisma.sleep.create({ data: { status: data } });
+      const newSleep = await prisma.sleep.create({ data });
 
       revalidatePath("/sleep");
 

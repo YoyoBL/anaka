@@ -1,4 +1,6 @@
 "use server";
+import { getIsraelCurrentTime } from "../lib/getIsraelCurrentTime";
+
 import { revalidatePath } from "next/cache";
 import prisma from "../lib/db";
 
@@ -14,7 +16,11 @@ export async function getDiapers() {
 
 export async function addDiaper(formData) {
    //format data to boolean
-   const data = { pee: !!formData.get("pee"), poop: !!formData.get("poop") };
+   const data = {
+      pee: !!formData.get("pee"),
+      poop: !!formData.get("poop"),
+      createdAt: getIsraelCurrentTime(),
+   };
 
    try {
       const newDiaper = await prisma.diaper.create({ data });

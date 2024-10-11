@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import prisma from "../lib/db";
+import { getIsraelCurrentTime } from "../lib/getIsraelCurrentTime";
 
 export async function getFeedings() {
    try {
@@ -14,11 +15,15 @@ export async function getFeedings() {
    }
 }
 
-export async function addFeeding(data) {
-   const breastSide = data.get("breastSide").toLowerCase();
+export async function addFeeding(formData) {
+   const breastSide = formData.get("breastSide").toLowerCase();
+   const data = {
+      breastSide,
+      createdAt: getIsraelCurrentTime(),
+   };
 
    try {
-      const newFeed = await prisma.feeding.create({ data: { breastSide } });
+      const newFeed = await prisma.feeding.create({ data });
       revalidatePath("/");
       return { newFeed, error: null };
    } catch (error) {
