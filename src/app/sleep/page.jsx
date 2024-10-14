@@ -1,7 +1,10 @@
+import { unstable_noStore } from "next/cache";
 import { addSleep, getSleeps } from "../actions/sleep.actions";
 import { format } from "date-fns";
 
 const SleepPage = async () => {
+   unstable_noStore();
+
    const sleepsData = await getSleepData();
 
    return (

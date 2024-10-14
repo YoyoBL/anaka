@@ -1,7 +1,9 @@
+import { unstable_noStore } from "next/cache";
 import { addFeeding, getFeedings } from "./actions/feeding.actions";
 import { format } from "date-fns";
 
 export default async function Home() {
+   unstable_noStore();
    const { feedings } = await getFeedings();
 
    return (

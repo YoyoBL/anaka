@@ -1,7 +1,10 @@
 import { format } from "date-fns";
 import { addDiaper, getDiapers } from "../actions/diapers.actions";
+import { unstable_noStore } from "next/cache";
 
 const DiapersPage = async () => {
+   unstable_noStore();
+
    const diapersData = await getDiapersData();
 
    return (
