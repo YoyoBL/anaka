@@ -1,7 +1,11 @@
 import { unstable_noStore } from "next/cache";
-import { addFeeding, getFeedings } from "./actions/feeding.actions";
+import {
+   addFeeding,
+   deleteFeeding,
+   getFeedings,
+} from "../actions/feeding.actions";
 import { format } from "date-fns";
-
+import DeleteEntryBtn from "./deleteEntryBtn";
 export default async function Home() {
    unstable_noStore();
    const { feedings } = await getFeedings();
@@ -53,18 +57,16 @@ export default async function Home() {
                                  <td>{date}</td>
                                  <td>{time}</td>
                                  <td>{feed.breastSide}</td>
-                                 <td>X</td>
+                                 <td>
+                                    <DeleteEntryBtn
+                                       onDeleteClick={() =>
+                                          deleteFeeding(feed.id)
+                                       }
+                                    />
+                                 </td>
                               </tr>
                            );
                         })}
-                     {/* row 1 */}
-                     <tr>
-                        <td>29/09</td>
-                        <td>15:05</td>
-                        <td>Left</td>
-                        <td>X</td>
-                     </tr>
-                     {/* row 2 */}
                   </tbody>
                </table>
             </div>
