@@ -20,7 +20,6 @@ export async function addFeeding(formData) {
    const breastSide = formData.get("breastSide").toLowerCase();
    const data = {
       breastSide,
-      createdAt: getIsraelCurrentTime(),
    };
 
    try {

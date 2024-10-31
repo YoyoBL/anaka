@@ -1,6 +1,6 @@
 import { unstable_noStore } from "next/cache";
 import { addSleep, getSleeps } from "../actions/sleep.actions";
-import { format } from "date-fns";
+import SleepTable from "./sleepTable";
 
 const SleepPage = async () => {
    unstable_noStore();
@@ -41,32 +41,7 @@ const SleepPage = async () => {
 
          <section>
             <div className="overflow-x-auto">
-               <table className="table table-zebra">
-                  {/* head */}
-                  <thead>
-                     <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                        <th></th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {sleepsData
-                        .sort((a, b) => b.createdAt - a.createdAt)
-                        .map(({ status, createdAt }) => {
-                           const date = format(createdAt, "dd/MM");
-                           const time = format(createdAt, "HH:mm");
-                           return (
-                              <tr>
-                                 <td>{date}</td>
-                                 <td>{time}</td>
-                                 <td>{status}</td>
-                              </tr>
-                           );
-                        })}
-                  </tbody>
-               </table>
+               <SleepTable sleepsData={sleepsData} />
             </div>
          </section>
       </div>
