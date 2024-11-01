@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import DeleteEntryBtn from "../(feeding)/deleteEntryBtn";
 
 const SleepTable = ({ sleepsData }) => {
    return (
@@ -17,14 +18,17 @@ const SleepTable = ({ sleepsData }) => {
          <tbody>
             {sleepsData
                .sort((a, b) => b.createdAt - a.createdAt)
-               .map(({ status, createdAt }) => {
+               .map(({ id, status, createdAt }) => {
                   const date = format(createdAt, "dd/MM");
                   const time = format(createdAt, "HH:mm");
                   return (
-                     <tr>
+                     <tr key={id}>
                         <td>{date}</td>
                         <td>{time}</td>
                         <td>{status}</td>
+                        <td>
+                           <DeleteEntryBtn deleteKey="sleep" id={id} />
+                        </td>
                      </tr>
                   );
                })}

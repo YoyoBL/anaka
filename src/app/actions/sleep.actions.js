@@ -14,10 +14,8 @@ export async function getSleeps() {
 }
 
 export async function addSleep(formData) {
-   getIsraelCurrentTime();
    const data = {
       status: formData.get("sleep-status"),
-      createdAt: getIsraelCurrentTime(),
    };
 
    try {

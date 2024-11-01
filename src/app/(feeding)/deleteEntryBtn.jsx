@@ -3,10 +3,10 @@ import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { deleteFromDb } from "../lib/dbQueries";
 import { deleteFeeding } from "../actions/feeding.actions";
 
-const DeleteEntryBtn = ({ onDeleteClick }) => {
+const DeleteEntryBtn = ({ deleteKey = "feeding", id }) => {
    return (
       <MinusCircleIcon
-         onClick={() => onDeleteClick}
+         onClick={() => deleteFromDb(deleteKey, id)}
          className="size-5 cursor-pointer"
       />
    );

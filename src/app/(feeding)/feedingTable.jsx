@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import DeleteEntryBtn from "./deleteEntryBtn";
 
 const FeedingTable = ({ feedings }) => {
    return (
@@ -21,17 +22,13 @@ const FeedingTable = ({ feedings }) => {
                   const date = format(feed.createdAt, "dd/MM");
                   const time = format(feed.createdAt, "HH:mm");
                   return (
-                     <tr>
+                     <tr key={feed.id}>
                         <td>{date}</td>
                         <td>{time}</td>
                         <td>{feed.breastSide}</td>
-                        {/* <td>
-                          <DeleteEntryBtn
-                             onDeleteClick={() =>
-                                deleteFeeding(feed.id)
-                             }
-                          />
-                       </td> */}
+                        <td>
+                           <DeleteEntryBtn deleteKey="feeding" id={feed.id} />
+                        </td>
                      </tr>
                   );
                })}
