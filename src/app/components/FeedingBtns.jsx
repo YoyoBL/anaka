@@ -5,8 +5,8 @@ import { useFormStatus } from "react-dom";
 
 const FeedingBtns = () => {
    return (
-      <div className="text-center space-y-2">
-         <h1>Start of feeding</h1>
+      <div className="text-center space-y-2 ">
+         <h1 className="opacity-70">Start of feeding</h1>
          <div className="grid grid-cols-2 gap-5">
             <form action={addFeeding}>
                <Btn side={"Left"} />
