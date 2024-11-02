@@ -22,7 +22,7 @@ const FeedingTable = ({ feedings }) => {
                   const date = format(feed.createdAt, "dd/MM");
                   const time = format(feed.createdAt, "HH:mm");
                   return (
-                     <tr key={feed.id}>
+                     <tr key={feed.id} id={feed.id} className="appear">
                         <td>{date}</td>
                         <td>{time}</td>
                         <td>{feed.breastSide}</td>

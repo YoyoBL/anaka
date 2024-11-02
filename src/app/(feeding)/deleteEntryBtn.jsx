@@ -1,15 +1,43 @@
 "use client";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { deleteFromDb } from "../lib/dbQueries";
-import { deleteFeeding } from "../actions/feeding.actions";
+import { useFormStatus } from "react-dom";
+import { revalidatePath } from "next/cache";
+
+const pages = { feeding: "/", diapers: "/diapers", sleep: "/sleep" };
 
 const DeleteEntryBtn = ({ deleteKey = "feeding", id }) => {
+   const deleteBinded = deleteFromDb.bind(undefined, deleteKey, id);
+   async function handleDelete() {
+      try {
+         const res = await deleteBinded();
+         if (res.data) {
+            document.getElementById(id).classList.add("disappear");
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   }
+
    return (
-      <MinusCircleIcon
-         onClick={() => deleteFromDb(deleteKey, id)}
-         className="size-5 cursor-pointer"
-      />
+      <form action={handleDelete}>
+         <DeleteBtn />
+      </form>
    );
 };
 
 export default DeleteEntryBtn;
+
+const DeleteBtn = () => {
+   const { pending } = useFormStatus();
+
+   return (
+      <button type="submit">
+         {!pending ? (
+            <MinusCircleIcon className="size-5 cursor-pointer" />
+         ) : (
+            <span className="loading loading-spinner loading-xs"></span>
+         )}
+      </button>
+   );
+};
